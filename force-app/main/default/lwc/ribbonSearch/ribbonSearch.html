@@ -1,0 +1,407 @@
+<template>
+    <lightning-card >
+        <p class="slds-card__header-title" title="Ribbon Searchs">Ribbon Search</p>
+        <!--c-1  -->
+        <template lwc:if={showSearchTypeDB}>
+            <lightning-combobox name="progress" label="Search Type" value={searchType} placeholder="Select Type"
+            options={options} onchange={handleSearchTypeDB}
+            style="width: 60%; display: block; margin-left: auto; margin-right: auto;" required></lightning-combobox>
+        </template>
+        <!-- c-2 -->
+        <template lwc:if={showProviderSearchTypeDB}>
+            <div class="centered-container">
+                <div class="vertical-container">
+                    <div class="horizontal-container">
+                        <lightning-input 
+                            type="text" 
+                            label="Search By Provider NPI" 
+                            onchange={handleNPI} 
+                            value={npiValue}
+                            class="input-field">
+                        </lightning-input>
+                        <lightning-input 
+                            type="text" 
+                            label="Search By Address" 
+                            onchange={handleAddress} 
+                            value={addressValue}
+                            class="input-field">
+                        </lightning-input>
+                    </div>
+                    <div class="horizontal-container">
+                        <lightning-input 
+                            type="text" 
+                            label="Search By Name" 
+                            onchange={handleName} 
+                            value={nameValue}
+                            class="input-field">
+                        </lightning-input>
+                        <lightning-combobox
+                            name="speciality"
+                            label="Search By Speciality"
+                            value={SpecialityTypeValue}
+                            placeholder="Select Type"
+                            options={SpecialityTypeOptions}
+                            onchange={handleChange} 
+                            class="combobox-field">
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template lwc:if={showProviderSearchResultCardDB}>
+            <template for:each={providerData} for:item="item">
+                <div key={item.npi}>
+                    <c-ribbon-search-child item={item}></c-ribbon-search-child>
+                </div>
+            </template>
+        </template>
+        <br>
+         <!-- c-4 -->
+        <!-- <template lwc:if={showProviderSearchResultDetailsDB}>
+            
+            <p class="details-heading"><u>Details</u></p>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Provider Name</th>
+                        <th>Provider Type</th>
+                        <th>Gender</th>
+                        <th>Taxonomy-1</th>
+                        <th>Taxonomy-2</th>
+                        <th>Provider Address</th>
+                        <th>Display</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={providerData} for:item="item">
+                        <tr key={item.Id}>
+                            <td class="truncate">{item.name}</td>
+                            <td class="truncate">{item.specialties_provider_name}</td>
+                            <td class="truncate">{item.specialties_provider_type}</td>
+                            <td class="truncate">{item.gender}</td>
+                            <td class="truncate">{item.specialties_taxonomy_1}</td>
+                            <td class="truncate">{item.specialties_taxonomy_2}</td>
+                            <td class="truncate">{item.address}</td>
+                            <td class="truncate">{item.specialties_display}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template> -->
+        
+         <!-- Location start -->
+         <template lwc:if={showLocationSearchTypeDB}>
+            <div class="horizontal-containerz">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Country" onchange={handleAddressCountry} value={countryValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Address" onchange={handleAddress} value={addressValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By Name" onchange={handleName} value={nameValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template>
+        <!-- insurance input fields start -->
+        <template lwc:if={showInsuranceSearchTypeDBN}>
+            <div class="horizontal-containerz">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Carrier Name" onchange={handleCarriername} value={carriernameValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By State" onchange={handleState} value={stateValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By Plan Name" onchange={handlePlanName} value={planNameValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template>
+        <!-- insurance input fields end -->
+
+        <!-- Clinical Input fields Start -->
+        <template lwc:if={showClinicalSearchTypeDBN}>
+            <div class="horizontal-containerz">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Clinical Area" onchange={handleclinicalarea} value={clinicalareaValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By condition"  onchange={handlecondition} value={conditionValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By treatment" onchange={handletreatment} value={treatmentValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template>
+        <!-- Clinical Input fields End -->
+        
+        <!-- Organization Input fields Start -->
+        <template lwc:if={showOrganizationSearchTypeDBN}>
+            <div class="horizontal-containerzorg">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Name" onchange={handlename} value={NameValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Address"  onchange={handleaddress} value={addressValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By Organization Types" onchange={handleorganization} value={organizationValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template>
+        <!-- Organization Input fields End -->
+         <template lwc:if={showLocationSearchResultCardDB}>
+            <div class="provider-details-container" onclick={handleShow}>
+                <lightning-icon if:true={showUpAndDown} icon-name="utility:chevronright" size="small" class="icon"></lightning-icon>
+                <lightning-icon if:false={showUpAndDown} icon-name="utility:chevrondown" size="small" class="icon"></lightning-icon>
+                <p class="provider-details-text">Provider Details</p>
+            </div>
+        </template>
+        <br>
+         <template lwc:if={showLocationSearchResultDetailsDB}>
+            <p class="details-heading"><u>Details</u></p>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Provider Type</th>
+                        <th>Gender</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th>Phone</th>
+                        <th>Taxonomy-1</th>
+                        <th>Taxonomy-2</th>
+                        <th>Provider Address</th>
+                        <th>Display</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={locationData} for:item="item">
+                        <tr key={item.Id}>
+                            <td class="truncate">{item.name}</td>
+                            <td class="truncate">{item.specialties_provider_type}</td>
+                            <td class="truncate">{item.gender}</td>
+                            <td class="truncate">{item.country}</td>
+                            <td class="truncate">{item.city}</td>
+                            <td class="truncate">{item.phone}</td>
+                            <td class="truncate">{item.specialties_taxonomy_1}</td>
+                            <td class="truncate">{item.specialties_taxonomy_2}</td>
+                            <td class="truncate">{item.address}</td>
+                            <td class="truncate">{item.specialties_display}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <!-- Location End -->
+        <!-- TEMPLATE START -->
+         <!-- INSURANCE START -->
+         <!-- <template lwc:if={showInsuranceSearchTypeDBN}>
+            <div class="horizontal-containerz">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Carrier Name" onchange={handleCarriername} value={carriernameValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By State" onchange={handleState} value={stateValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By Plan Name" onchange={handlePlanName} value={planNameValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template> -->
+        <template lwc:if={showInsuranceSearchResultCardDBN}>
+            <div class="provider-details-container" onclick={handleShow}>
+                <lightning-icon if:true={showUpAndDown} icon-name="utility:chevronright" size="small" class="icon"></lightning-icon>
+                <lightning-icon if:false={showUpAndDown} icon-name="utility:chevrondown" size="small" class="icon"></lightning-icon>
+                <p class="provider-details-text">Provider Details</p>
+            </div>
+        </template>
+        <br>
+        <template lwc:if={showInsuranceSearchResultDetailsDBN}>
+            <p class="details-heading"><u>Details</u></p>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Carrier Association</th>
+                        <th>State</th>
+                        <th>Display Name</th>
+                        <th>Category</th>
+                        <th>Carrier Name</th>
+                        <th>Plan Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={insuranceData} for:item="item">
+                        <tr key={item.Id}>
+                            <td class="truncate">{item.carrier_association}</td>
+                            <td class="truncate">{item.state}</td>
+                            <td class="truncate">{item.display_name}</td>
+                            <td class="truncate">{item.category}</td>
+                            <td class="truncate">{item.carrier_name}</td>
+                            <td class="truncate">{item.plan_name}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        
+
+        <!-- RESULT DETAILS END -->
+        <!-- INSURANCE END -->
+        <!-- TEMPLATE END -->
+         <!-- c-8 -->
+
+        <!-- Clinical Search Start -->
+         <!-- input Start -->
+         <!-- <template lwc:if={showClinicalSearchTypeDBN}>
+            <div class="horizontal-containerz">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Clinical Area" onchange={handleclinicalarea} value={clinicalareaValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By condition"  onchange={handlecondition} value={conditionValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By treatment" onchange={handletreatment} value={treatmentValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template> -->
+         <!-- input End -->
+        <!-- Clinical Search End -->
+         <!-- RESULT CARD START -->
+         <template lwc:if={showClinicalSearchResultCardDBN}>
+            <div class="provider-details-container" onclick={handleShow}>
+                <lightning-icon if:true={showUpAndDown} icon-name="utility:chevronright" size="small" class="icon"></lightning-icon>
+                <lightning-icon if:false={showUpAndDown} icon-name="utility:chevrondown" size="small" class="icon"></lightning-icon>
+                <p class="provider-details-text">Provider Details</p>
+            </div>
+        </template>
+         <!-- RESULT CARD END -->
+         <!-- RESULT DETAILS START -->
+         
+         <template lwc:if={showClinicalSearchResultDetailsDBN}>
+            <hr>
+            <p class="details-heading"><u>Details</u></p>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Clinical Area</th>
+                        <th>Condition</th>
+                        <th>Treatment</th>
+                        <th>Taxonomy_1</th>
+                        <th>Taxonomy_2</th>
+                        <th>Type</th>
+                        <th>Provider Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={clinicalData} for:item="item">
+                        <tr key={item.Id}>
+                            <td class="truncate">{item.clinical_area}</td>
+                            <td class="truncate">{item.condition}</td>
+                            <td class="truncate">{item.treatment}</td>
+                            <td class="truncate">{item.specialties_taxonomy_1}</td>
+                            <td class="truncate">{item.specialties_taxonomy_2}</td>
+                            <td class="truncate">{item.type}</td>
+                            <td class="truncate">{item.specialties_provider_type}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+         <!-- RESULT DETAILS END -->
+
+         <!-- Search Organizations Start-->
+           <!-- input Start -->
+           <!-- <template lwc:if={showOrganizationSearchTypeDBN}>
+            <div class="horizontal-containerzorg">
+                <div class="input-rowz slds-grid slds-wrap slds-align_absolute-center">
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Name" onchange={handlename} value={NameValue} class="input-fieldz"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-horizontal_x-small">
+                        <lightning-input type="text" label="Search By Address"  onchange={handleaddress} value={addressValue} class="input-fieldz"></lightning-input>
+                    </div>
+                </div>
+                <div class="input-rowz slds-p-top_small slds-align_absolute-center">
+                    <lightning-input type="text" label="Search By Organization Types" onchange={handleorganization} value={organizationValue} class="input-fieldzz"></lightning-input>
+                </div>
+            </div>
+        </template> -->
+         <!-- input End -->
+          <!-- RESULT CARD START -->
+        <template lwc:if={showOrganizationsSearchResultCardDBN}>
+            <div class="provider-details-container" onclick={handleShow}>
+                <lightning-icon if:true={showUpAndDown} icon-name="utility:chevronright" size="small" class="icon"></lightning-icon>
+                <lightning-icon if:false={showUpAndDown} icon-name="utility:chevrondown" size="small" class="icon"></lightning-icon>
+                <p class="provider-details-textorg">Provider Details</p>
+            </div>
+        </template>
+         <!-- RESULT CARD END -->
+        
+         <template lwc:if={showOrganizationsSearchResultDetailsDBN}> 
+            <p class="details-heading"><u>Details</u></p>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>City</th>
+                        <th>Organization Types</th>
+                        <th>Address</th>
+                        <!-- <th>Type</th>
+                        <th>Provider Type</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={organizationData} for:item="item">
+                        <tr key={item.Id}>
+                            <td class="truncate">{item.name}</td>
+                            <td class="truncate">{item.phone}</td>
+                            <td class="truncate">{item.city}</td>
+                            <td class="truncate">{item.organization_types}</td>
+                            <td class="truncate">{item.address}</td>
+                            <!-- <td class="truncate">{item.type}</td>
+                            <td class="truncate">{item.specialties_provider_type}</td> -->
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+         <!-- button start -->
+         <template lwc:if={showSearchButtonDB}>
+            <lightning-button variant="brand" label="Search" onclick={handleSearchDB} class="slds-align_absolute-center" style="margin-top: 6px;"></lightning-button>
+         </template>
+         <!-- c-9 -->
+         <template lwc:if={showSpinnerDB}>
+            <div class="slds-align_absolute-center">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template>
+        <!-- c-10 -->
+        <!-- <template lwc:if={showBackButtonDB}>
+            <lightning-button variant="brand" label="back" onclick={handleBackDB} class="back-button slds-align_absolute-center"></lightning-button>
+        </template> -->
+         
+            <template lwc:if={showBackButtonDB}>
+                <lightning-button variant="brand" label="Back" onclick={handleBackDB} class="back-button-bd"></lightning-button>
+            </template>
+            <!-- Other component content here -->
+        
+        
+        <p slot="footer"><b>&#169; KT Ribbon Search</b></p>
+    </lightning-card>
+</template>

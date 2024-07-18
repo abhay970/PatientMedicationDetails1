@@ -1,0 +1,189 @@
+<template>
+    <div class="provider-details-container" onclick={handleShow} data-target-id={item.npi}>
+        <template lwc:if={showProviderSearchResultCardDB}>
+            <lightning-icon icon-name="utility:chevrondown" size='xx-small' class="slds-var-p-horizontal_x-small custom-icon"></lightning-icon>
+        </template>
+        <template lwc:else>
+            <lightning-icon icon-name="utility:chevronright" size='xx-small' class="slds-var-p-horizontal_x-small custom-icon"></lightning-icon>
+        </template>
+        <p class="provider-details-text" key={item.name}>{item.name}</p>
+    </div>
+
+    <template lwc:if={showProviderSearchResultCardDB}>
+        <!-- PersonalDetails section  Start-->
+        <div class="provider-details-containerss provider-details-texts" onclick={handleShowOn}>
+            <template lwc:if={PernalDetail}>
+                <lightning-icon icon-name="utility:chevrondown" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <template lwc:else>
+                <lightning-icon icon-name="utility:chevronright" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <p class="provider-details-text12" key={item.name}><b>PersonalDetails</b></p>
+        </div>
+
+        <template lwc:if={PernalDetail}>
+            <div class="custom-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <!-- <th>Clinical Area</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="truncate">{item.name}</td>
+                            <td class="truncate">{item.gender}</td>
+                            <td class="truncate">{item.age}</td>
+                            <!-- <td class="truncate">{item.clinical_area}</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <!-- Personal section End -->
+        <!-- Specialties section Start -->
+        <div class="provider-details-containerss provider-details-texts" onclick={handleShowTw} data-target-id={item.npi}>
+            <template lwc:if={specialties}>
+                <lightning-icon icon-name="utility:chevrondown" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <template lwc:else>
+                <lightning-icon icon-name="utility:chevronright" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <p class="provider-details-text" key={item.name}><b>SpecialtiesDetails</b></p>
+        </div>
+
+        <template lwc:if={specialties}>
+            <div class="custom-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Provider Name</th>
+                            <th>Provider Type</th>
+                            <th>Board Specialty</th>
+                            <th>Taxonomy-1</th>
+                            <th>Taxonomy-2</th>
+                            <th>Display</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={currentSpecialties} for:item="itm">
+                            <tr key={itm.specialties_provider_name}>
+                                <td class="truncate">{itm.specialties_provider_name}</td>
+                                <td class="truncate">{itm.specialties_provider_type}</td>
+                                <td class="truncate">{itm.specialties_board_specialty}</td>
+                                <td class="truncate">{itm.specialties_taxonomy_1}</td>
+                                <td class="truncate">{itm.specialties_taxonomy_2}</td>
+                                <td class="truncate">{itm.specialties_display}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">{specialtiesPage} / {totalSpecialtiesPages}</span>
+                    <button onclick={prevPageSpecialties} disabled={isFirstPageSpecialties}>&lt;</button>
+                    <button onclick={nextPageSpecialties} disabled={isLastPageSpecialties}>&gt;</button>
+                </div>
+            </div>
+        </template>
+        <!-- Specaility section End -->
+
+        <!-- Insurances section Start -->
+        <div class="provider-details-containerss provider-details-texts" onclick={handleShowThr} data-target-id={item.npi}>
+            <template lwc:if={insurancesDetails}>
+                <lightning-icon icon-name="utility:chevrondown" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <template lwc:else>
+                <lightning-icon icon-name="utility:chevronright" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <p class="provider-details-text" key={item.name}><b>InsurancesDetails</b></p>
+        </div>
+
+        <template lwc:if={insurancesDetails}>
+            <div class="custom-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Carrier Name</th>
+                            <th>Carrier Brand</th>
+                            <th>Carrier Association</th>
+                            <th>State</th>
+                            <th>Plan Name</th>
+                            <th>Plan Type</th>
+                            <th>Display Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={currentInsurances} for:item="itm">
+                            <tr key={itm.carrier_name}>
+                                <td class="truncate">{itm.carrier_name}</td>
+                                <td class="truncate">{itm.carrier_brand}</td>
+                                <td class="truncate">{itm.carrier_association}</td>
+                                <td class="truncate">{itm.state}</td>
+                                <td class="truncate">{itm.plan_name}</td>
+                                <td class="truncate">{itm.plan_type}</td>
+                                <td class="truncate">{itm.display_name}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">{insurancesPage} / {totalInsurancesPages}</span>
+                    <button onclick={prevPageInsurances} disabled={isFirstPageInsurances}>&lt;</button>
+                    <button onclick={nextPageInsurances} disabled={isLastPageInsurances}>&gt;</button>
+                </div>
+            </div>
+        </template>
+        <!-- Insurances section End -->
+
+
+        <!-- Location section Start -->
+        <div class="provider-details-containerss provider-details-texts" onclick={handleShowFo} data-target-id={item.npi}>
+            <template lwc:if={locationDetails}>
+                <lightning-icon icon-name="utility:chevrondown" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <template lwc:else>
+                <lightning-icon icon-name="utility:chevronright" size='xx-small' class="slds-var-p-horizontal_x-small"></lightning-icon>
+            </template>
+            <p class="provider-details-text" key={item.name}><b>LocationDetails</b></p>
+        </div>
+
+        <template lwc:if={locationDetails}>
+            <div class="custom-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Street</th>
+                            <th>Address Line 1</th>
+                            <th>Address Line 2</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>ZIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={currentLocations} for:item="itm">
+                            <tr key={itm.address}>
+                                <td class="truncate">{itm.address_details_street}</td>
+                                <td class="truncate">{itm.address_details_address_line_1}</td>
+                                <td class="truncate">{itm.address_details_address_line_2}</td>
+                                <td class="truncate">{itm.address_details_city}</td>
+                                <td class="truncate">{itm.address_details_state}</td>
+                                <td class="truncate">{itm.address_details_zip}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">{locationPage} / {totalLocationPages}</span>
+                    <button onclick={prevPageLocations} disabled={isFirstPageLocations}>&lt;</button>
+                    <button onclick={nextPageLocations} disabled={isLastPageLocations}>&gt;</button>
+                </div>
+            </div>
+        </template>
+        <!-- Education section End-->
+     
+    </template>
+</template>
